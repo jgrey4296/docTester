@@ -4,7 +4,10 @@
 ## Architecture Design 
     Python + nlp to generate the document structure,
     write a little unit test framework to test the produced structures.
-    
+
+### Libraries:
+    Spacy, pyparsing
+
 ## Annotations in the text:
     Use something not likely to be in the written document to begin with.. 
     %tag% may be best?
