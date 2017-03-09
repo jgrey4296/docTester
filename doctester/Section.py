@@ -12,9 +12,9 @@ class Section:
     def __init__(self,title,text):
         #the name of the section / chapter
         self.title = title
-        //the actual text, parsed by spacy
+        #the actual text, parsed by spacy
         self.text = nlp(text)
-        //Any extracted tags and sections from the text
+        #Any extracted tags and sections from the text
         self.tags = {}
         self.sections = {}
 
