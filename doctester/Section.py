@@ -1,10 +1,11 @@
-import spacy
+#import spacy
 import logging as root_logger
 from doctester.DocException import DocException
 logging = root_logger.getLogger(__name__)
 from doctester.Should import Should
 
-nlp = spacy.load('en')
+#nlp = spacy.load('en')
+nlp = lambda x : x 
 
 class Section:
     """ An individual section of a document """
