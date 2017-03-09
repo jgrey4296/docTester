@@ -16,5 +16,5 @@ class DocException(Exception):
                                                      self.vals['actual'])
         elif 'missing' in self.vals:
             return "{} : missing {}".format(self.desc, self.vals['missing'])
-        
-        return "{} : {}".format(self.desc, )
+        else:
+            return "{}".format(self.desc)
