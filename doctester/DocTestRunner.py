@@ -4,11 +4,12 @@ from doctester.DocException import DocException
 
 class DocTestRunner:
     """ The main test runner class. Subclass this to add tests """
-    
+    #Usefule constants:
     TEST_NAME = 'test_'
     TICK = '✓'
     CROSS = 'X' 
     TAB =  "	"
+
     def __call__(self):
         """ The main call to run tests """
         passed = 0
