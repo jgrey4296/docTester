@@ -44,11 +44,16 @@
 
 
 ## Examples (using Chai-style notation):
-   document.should.have.a.section('background')
-   document.should.mention('fligstein')
-   document.section('background').should.mention('bourdieu')
-   document.should.have.a.length.larger.than(10).pages
+    document.should.have.a.section('background')
+    document.should.mention('fligstein')
+    document.section('background').should.mention('bourdieu')
+    document.should.have.a.length.larger.than(10).pages
    
-   document.section('introduction').should.precede.section('background')
-   document.section('introduction').should.mention('research questions')
-   document.section('introduction').should.have.subsections(3)
+    document.section('introduction').should.precede.section('background')
+    document.section('introduction').should.mention('research questions')
+    document.section('introduction').should.have.subsections(3)
+
+    document.should.have.section('blah','bloo','blee')
+    
+    
+    
