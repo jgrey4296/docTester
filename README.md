@@ -18,8 +18,14 @@
         
     Recognise references (a..., 93)
     headings, org style: ** Blah
-    
 
+    Annotations need to be applicable for:
+        Document level
+        Chapter level
+        Section Level
+        Subsection level
+        Paragraph level
+        Sentence Level
 
 ## Things you could test for:
     document structure:
@@ -28,7 +34,6 @@
         titles
         lists
         image references
-        
     
     tags { argument, structural, etc }
     regexs
