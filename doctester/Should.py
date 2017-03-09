@@ -6,17 +6,15 @@ class Should:
     def __init__(self,ref):
         self.ref = ref
         self.state = {}
-        
-    def __getattr__(self,name):
+        #raise Exception("Can't call {} on a should chain".format(name))
+
+    def __getattr__(self,value):
         non_terminals = "have a near come after use".split(r' ')
-        if name in non_terminals:
+        if value in non_terminals:
             #non-terminals just return the should again for chaining
             return self
-        elif hasattr(self,name):
-            #terminals return the appropriate method to call
-            return getattr(super(self),val)
         else:
-            raise Exception("Can't call {} on a should chain".format(name))
+            raise AttributeError('{} not suitable in a should'.format(value))
 
     #Terminals:
     def mention(self,reference):

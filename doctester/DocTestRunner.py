@@ -18,7 +18,9 @@ class DocTestRunner:
         total = len(tests)
         for test in tests:
             try:
-                getattr(self,test)()
+                result = getattr(self,test)()
+                if result is not None and result == False:
+                    raise DocException('Test returned False')
             except DocException as e:
                 logging.warning("{} {} : {} {} {} {} {}".format(DocTestRunner.TAB,
                                                         DocTestRunner.CROSS,

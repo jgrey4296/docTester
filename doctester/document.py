@@ -28,7 +28,7 @@ class Document:
         if value == 'should':
             return Should(self)
         else:
-            return getattr(super(self),value)
+            raise AttributeError('{} Not Suitable for Document'.format(value))
         
     def read_files(self):
         for x in self.files:

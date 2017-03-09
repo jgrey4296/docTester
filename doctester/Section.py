@@ -23,7 +23,7 @@ class Section:
         if value == 'should':
             return Should(self)
         else:
-            return getattr(super(self),value)
+            raise AttributeError('{} not suitable for Section'.format(value))
         
     def extract_tags(self):
         """ Goes through the text, sentence by sentence, 
