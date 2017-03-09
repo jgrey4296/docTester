@@ -1,4 +1,4 @@
-from doctester import Document, DocTestRunner
+from doctester import Document, DocTestRunner, DocException
 
 # Setup root_logger:
 import logging as root_logger

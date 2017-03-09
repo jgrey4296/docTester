@@ -41,7 +41,7 @@ class Document:
 
     def chapter(self,name):
         #Get a chapter from the document, use the same error as 'should'ing if it fails
-        if name in self.data:
+        if name in self.chapters:
             return self.chapters[name]
         else:
             raise DocException("No Chapter Found",missing=name)

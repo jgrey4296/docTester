@@ -1,4 +1,7 @@
 from doctester.DocException import DocException
+import logging as root_logger
+logging = root_logger.getLogger(__name__)
+
 
 class Should:
     """ Should is a stateful chain of tests that when it passes is silent,
@@ -29,6 +32,10 @@ class Should:
         """ Test for a section, and set state to allow further chaining """
         raise DocException("No section found",missing=name)
 
+    def chapter(self,name):
+        """ Test for a chapter, and set the state for further chaining """
+        return self.ref.chapter(name)
+    
     def sections(self,*args):
         """ Utility to test for multiple sections """
         raise DocException("Sections not found",missing=args)
@@ -40,7 +47,9 @@ class Should:
     def regex(self,reg):
         """ Test a selected Doc/Sec/SubSec/Para/Sentence for a regex """
         raise DocException("Regex not found",missing=reg)
-    
+
+    def length(self,value):
+        raise DocException("Length not found")
     
 
 class SizedShould(Should):
@@ -55,7 +64,8 @@ class SizedShould(Should):
     def smaller(self):
         return self
 
-    def equal(self,value)
+    def equal(self,value):
+        return self
     
     def than(self):
         return self

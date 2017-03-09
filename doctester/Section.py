@@ -35,9 +35,11 @@ class Section:
         """ Goes through the text, extracting a subsection tree (as this is written for org file parsing """
         return None
         
-    def subsection(self,value):
+    def section(self,value):
         """ Get a subsection of a section """
         if value in self.sections:
             return self.sections[value]
         else:
             raise DocException("Subsection not found",missing=value)
+
+    
