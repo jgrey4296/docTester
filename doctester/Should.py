@@ -12,7 +12,7 @@ class Should:
         #raise Exception("Can't call {} on a should chain".format(name))
 
     def __getattr__(self,value):
-        non_terminals = "have a near come after use".split(r' ')
+        non_terminals = "have a near come after use length larger smaller equal".split(r' ')
         if value in non_terminals:
             #non-terminals just return the should again for chaining
             return self
@@ -32,6 +32,9 @@ class Should:
         """ Test for a section, and set state to allow further chaining """
         raise DocException("No section found",missing=name)
 
+    def subsections(self,val):
+        raise DocException("Not enough subsections found")
+    
     def chapter(self,name):
         """ Test for a chapter, and set the state for further chaining """
         return self.ref.chapter(name)
@@ -48,8 +51,9 @@ class Should:
         """ Test a selected Doc/Sec/SubSec/Para/Sentence for a regex """
         raise DocException("Regex not found",missing=reg)
 
-    def length(self,value):
-        raise DocException("Length not found")
+    def than(self,value):
+        """ Test a should state agaisnt a value """
+        raise DocException('Than value fail')
     
 
 class SizedShould(Should):
