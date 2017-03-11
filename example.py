@@ -15,48 +15,62 @@ logging = root_logger.getLogger(__name__)
 class ExampleTester(DocTestRunner):
 
     def __init__(self):
+        super().__init__()
         self.d = Document('./data')
     
-    def test_success(self):
+    def test_success_(self):
         return True
 
-    def test_fail(self):
+    def test_fail_(self):
         return False
 
     def test_chapters(self):
         self.d.should.have.chapter('test')
         self.d.should.have.chapter('second')
 
-    def test_chapters_fail(self):
+    def test_fail_chapters(self):
         self.d.should.have.chapter('third')
 
     def test_section(self):
         self.d.chapter('test').should.have.section('introduction')
         self.d.chapter('second').should.have.section('background')
 
-    def test_section_fail(self):
+    def test_fail_section(self):
         self.d.chapter('test').should.have.section('blahh')
 
     def test_mention(self):
         self.d.chapter('test').should.mention('blah')
 
-    def test_mention_fail(self):
+    def test_fail_mention(self):
         self.d.chapter('test').should.mention('bloo')
 
     def test_length(self):
-        self.d.should.have.length(5).pages()
-        self.d.chapter('test').should.have.length(3).paragraphs()
+        self.d.should.have.length.larger.than(5).pages()
+        self.d.chapter('test').should.have.length.larger.than(5).paragraphs()
         self.d.chapter('test').section('introduction').should.have.at.least.length(1).paragraphs()
         
-    def test_length_fail(self):
-        self.d.chapter('second').should.have.length(2).paragraphs()
+    def test_fail_length(self):
+        self.d.chapter('second').should.have.length.larger.than(5).paragraphs()
         self.d.chapter('second').section('introduction').should.have.at.least.length(1).paragraphs()
 
     def test_precedence(self):
         self.d.chapter('test').section('introduction').should.precede('conclusion')
 
-    def test_precedence_fail(self):
+    def test_fail_precedence(self):
         self.d.chapter('test').section('conclusion').should.precede('introduction')
+
+    def test_length_greater(self):
+        self.d.should.have.length.larger.than(10).pages()
+
+    def test_fail_length_greater(self):
+        self.d.should.have.length.larger.than(100).pages()
+
+    def test_has_subsections(self):
+        self.d.chapter('test').should.have.subsections(2)
+
+    def test_fail_has_subsections(self):
+        self.d.chapter('test').should.have.subsections(5)
+        
         
 ##############################
 if __name__ == '__main__':
