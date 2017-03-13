@@ -126,7 +126,10 @@ class SizedShould(Should):
         return self
 
     
-    def than(self):
+    def than(self,value):
+        #although it comes first in the chain x.should.have.length.larger.than.pages
+        #actually sets up the b value in the comparison
+        self.state['compVal'] = value
         return self
 
     
