@@ -43,11 +43,24 @@ class ExampleTester(DocTestRunner):
 
     def test_fail_mention(self):
         self.d.chapter('test').should.mention('bloo')
+        
+    def test_citation(self):
+        self.d.chapter('test').should.cite('Graeber 99')
+        
+    def test_fail_mention(self):
+        self.d.chapter('test').should.mention('bloo')
 
-    def test_length(self):
+    def test_length_pages(self):
         self.d.should.have.length.larger.than(5).pages()
+
+    def test_length_paragraphs(self):
         self.d.chapter('test').should.have.length.larger.than(5).paragraphs()
-        self.d.chapter('test').section('introduction').should.have.at.least.length(1).paragraphs()
+
+    def test_length_least(self):
+        self.d.chapter('test').section('introduction').should.have.length.at.least(1).paragraphs()
+
+    def test_length_most(self):
+        self.d.chapter('test').section('introduction').should.have.length.at.most(4).paragraphs()
         
     def test_fail_length(self):
         self.d.chapter('second').should.have.length.larger.than(5).paragraphs()
@@ -59,17 +72,20 @@ class ExampleTester(DocTestRunner):
     def test_fail_precedence(self):
         self.d.chapter('test').section('conclusion').should.precede('introduction')
 
-    def test_length_greater(self):
-        self.d.should.have.length.larger.than(10).pages()
+    def test_length_larger(self):
+        self.d.should.have.length.larger.than(10).sentences()
 
     def test_fail_length_greater(self):
-        self.d.should.have.length.larger.than(100).pages()
+        self.d.should.have.length.larger.than(100).sentences()
 
     def test_has_subsections(self):
         self.d.chapter('test').should.have.subsections(2)
 
     def test_fail_has_subsections(self):
         self.d.chapter('test').should.have.subsections(5)
+
+    def test_fail_citation(self):
+        self.d.chapter('test').should.cite('McCoy 2003')
         
         
 ##############################
