@@ -1,4 +1,4 @@
-from doctester import Document, DocTestRunner, DocException
+from doctester import Document, DocTestRunner, DocException, SizedShould
 
 # Setup root_logger:
 import logging as root_logger
@@ -12,6 +12,8 @@ root_logger.getLogger('').addHandler(console)
 logging = root_logger.getLogger(__name__)
 ##############################
 
+
+
 class ExampleTester(DocTestRunner):
 
     def __init__(self):
@@ -22,7 +24,7 @@ class ExampleTester(DocTestRunner):
         return True
 
     def test_fail_(self):
-        return False
+        raise DocException('Should Fail')
 
     def test_chapters(self):
         self.d.should.have.chapter('test')
@@ -34,7 +36,7 @@ class ExampleTester(DocTestRunner):
     def test_section(self):
         self.d.chapter('test').should.have.section('introduction')
         self.d.chapter('second').should.have.section('background')
-
+        
     def test_fail_section(self):
         self.d.chapter('test').should.have.section('blahh')
 
@@ -51,7 +53,8 @@ class ExampleTester(DocTestRunner):
         self.d.chapter('test').should.mention('bloo')
 
     def test_length_pages(self):
-        self.d.should.have.length.larger.than(5).pages()
+        SizedShould.WordsInAPage = 50
+        self.d.should.have.length.larger.than(2).pages()
 
     def test_length_paragraphs(self):
         self.d.chapter('test').should.have.length.larger.than(5).paragraphs()
@@ -62,9 +65,11 @@ class ExampleTester(DocTestRunner):
     def test_length_most(self):
         self.d.chapter('test').section('introduction').should.have.length.at.most(4).paragraphs()
         
-    def test_fail_length(self):
-        self.d.chapter('second').should.have.length.larger.than(5).paragraphs()
-        self.d.chapter('second').section('introduction').should.have.at.least.length(1).paragraphs()
+    def test_fail_length_paragraphs(self):
+        self.d.chapter('second').should.have.length.larger.than(15).paragraphs()
+
+    def test_fail_length_least_paragraphs(self):
+        self.d.chapter('second').section('introduction').should.have.length.at.least(10).paragraphs()
 
     def test_precedence(self):
         self.d.chapter('test').section('introduction').should.precede('conclusion')
