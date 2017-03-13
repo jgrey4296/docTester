@@ -22,7 +22,7 @@ TAG = namedtuple('Tag','text')
 CITATION = namedtuple('Citation','text')
 
 #utils
-lineSep = re.compile(r'\n\n+')
+lineSep = re.compile(r'\n\s*\n+')
 s = pp.Suppress
 op = pp.Optional
 opLn = s(op(pp.LineEnd()))
