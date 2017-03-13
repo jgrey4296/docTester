@@ -4,6 +4,7 @@ from os import listdir
 from doctester.DocException import DocException
 from doctester.Section import Section
 from doctester.Should import Should
+from doctester.TextParser import parseText
 logging = root_logger.getLogger(__name__)
 
 class Document:
@@ -37,11 +38,34 @@ class Document:
             with open(fullpath,'r') as f:
                 text = f.read()
             #chapters are the same ds as sections
-            self.chapters[title] = Section(title,text)
+            self.chapters[title.lower().strip()] = parseText(text)
 
     def chapter(self,name):
         #Get a chapter from the document, use the same error as 'should'ing if it fails
-        if name in self.chapters:
-            return self.chapters[name]
+        fname = name.lower().strip()
+        if fname in self.chapters:
+            return self.chapters[fname]
         else:
             raise DocException("No Chapter Found",missing=name)
+
+    def get_word_count(self):
+        return sum([x.get_word_count() for x in self.chapters.values()])
+
+    def get_sentence_count(self):
+        return sum([x.get_sentence_count() for x in self.chapters.values()])
+    
+    def get_paragraph_count(self):
+        return sum([x.get_paragraph_count() for x in self.chapters.values()])
+
+    def get_citations(self):
+        base_set = set()
+        citation_sets = [x.get_citations() for x in self.chapters.values()]
+        for chapter in citation_sets:
+            base_set = base_set.union(chapter)
+        return base_set
+
+    def mentions(self,reference):
+        for chapter in self.chapters.values():
+            if chapter.mentions(reference):
+                return True
+        return False
