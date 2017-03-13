@@ -111,8 +111,20 @@ class SizedShould(Should):
         self.state['comp'] = lambda a,b: a < b
         return self
 
-    def equal(self,value):
+    def equal(self):
+        self.state['comp'] = lambda a,b: a == b
         return self
+
+    def least(self,value):
+        self.state['comp'] = lambda a,b : a >= b
+        self.state['compVal'] = value
+        return self
+
+    def most(self,value):
+        self.state['comp'] = lambda a,b : a <= b
+        self.state['compVal'] = value
+        return self
+
     
     def than(self):
         return self
