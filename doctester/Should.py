@@ -132,4 +132,51 @@ class SizedShould(Should):
         self.state['compVal'] = value
         return self
 
+    #The things that can be checked for size:
+    def pages(self):
+        baseWc = self.ref.get_word_count()
+        compareTo = SizedShould.WordsInAPage * self.state['compVal']
+        if self.state['comp'](baseWc, compareTo):
+            return self
+        else:
+            raise DocException('Not enough words to fullfill page count: {}/({} * {})'.format(baseWc,self.state['compVal'],SizedShould.WordsInAPage))
+
+    def paragraphs(self):
+        paragraphCount = self.ref.get_paragraph_count()
+        if self.state['comp'](paragraphCount,self.state['compVal']):
+            return self
+        else:
+            raise DocException('Not Enough Paragraphs: {} / {}'.format(paragraphCount,
+                                                                       self.state['compVal']))
+
+    def sentences(self):
+        sentenceCount = self.ref.get_sentence_count()
+        if self.state['comp'](sentenceCount, self.state['compVal']):
+            return self
+        else:
+            raise DocException('Not Enough Sentences: {} / {}'.format(sentenceCount,
+                                                                      self.state['compVal']))
+        
+    def words(self):
+        wordCount = self.ref.get_word_count()
+        if self.state['comp'](wordCount,self.state['compVal']):
+            return self
+        else:
+            raise DocException('Not Enough Words: {} / {}'.format(wordCount,
+                                                                  self.state['compVal']))
+
+    def citations(self):
+        citeCount = len(self.ref.get_citations())
+        if self.state['comp'](citeCount, self.state['compVal']):
+            return self
+        else:
+            raise DocException('Not Enough Citations: {} / {}'.format(citeCount,
+                                                                      self.state['compVal']))
     
+    def subsections(self):
+        numSections = len(self.ref.subsections)
+        if self.state['comp'](numSections,self.state['compVal']):
+            return self
+        else:
+            raise DocException('Not Enough SubSections: {} / {}'.format(numSections,
+                                                                        self.state['compVal']))
