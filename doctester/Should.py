@@ -12,10 +12,12 @@ class Should:
         #raise Exception("Can't call {} on a should chain".format(name))
 
     def __getattr__(self,value):
-        non_terminals = "have a near come after use length larger smaller equal".split(r' ')
+        non_terminals = "have a near come after use".split(r' ')
         if value in non_terminals:
             #non-terminals just return the should again for chaining
             return self
+        elif value == 'length':
+            return self._length()
         else:
             raise AttributeError('{} not suitable in a should'.format(value))
 
