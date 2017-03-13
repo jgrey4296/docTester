@@ -71,7 +71,7 @@ def parseText(text):
             results = "Nothing, just add the paragraph"
             #pylint: enable=redefined-variable-type
 
-        elif isinstance(results[0], HEADER) and rootSection is None:
+        if isinstance(results[0], HEADER) and rootSection is None:
             #a new, root section
             currentSection = Section(results[0].title, results[0].level)
             rootSection = currentSection
