@@ -56,6 +56,10 @@ class Should:
     def than(self,value):
         """ Test a should state agaisnt a value """
         raise DocException('Than value fail')
+
+    def _length(self):
+        # _length instead of length to not interfere with getattr above
+        return SizedShould(self.ref)
     
 
 class SizedShould(Should):
