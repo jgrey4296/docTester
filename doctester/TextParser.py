@@ -4,6 +4,8 @@ import pyparsing as pp
 from pyparsing import pyparsing_common as ppc
 from collections import namedtuple
 import re
+from doctester.Section import Section
+import IPython
 # Group, Suppress, ParseResults, Forward
 # OnlyOnce, , FollowedBy, NotAny, OneOrMore, ZeroOrMore, Optional, SkipTo, Combine, Dict
 # And, Each, MatchFirst, Or, CharsNotIn, Empty, Keyword, CaselessKeyword, Literal, CaselessLiteral,
