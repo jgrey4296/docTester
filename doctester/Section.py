@@ -32,11 +32,17 @@ class Section:
         else:
             raise AttributeError('{} not suitable for Section'.format(value))
 
+    def is_section(self):
+        return True
+
+    def is_document(self):
+        return False
+
     def add_subsection(self, title, level):
         """ Add a new subsection to the current section, or a set indentation level """
         ftitle = title.lower().strip()
         new_section = Section(ftitle, level)
-        new_section.parent_section = self
+        new_section.set_parent(self)
         self.ordered_subsections.append(new_section)
         self.named_subsections[ftitle] = new_section
         return new_section
@@ -44,6 +50,12 @@ class Section:
     def get_parent(self):
         return self.parent_section
 
+    def set_parent(self,ref):
+        if self.parent_section is not None:
+            raise Exception('Attempting to redefine parent section')
+        else:
+            self.parent_section = ref
+    
     def add_tag(self, text):
         ftext = text.lower().strip()
         self.tags.add(ftext)
