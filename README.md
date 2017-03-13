@@ -1,64 +1,31 @@
 #  Unit Testing of writing
-    If you annotate sections of text with meta-data, you can unit test that text to fulfill particular conditions.
+    I Find Test Driven Development to be a particularly useful way of structuring my code,
+    and tracking my progress as I write programs.  
+    I find I lack that focus when I try to write essays, so I asked the question:  
+    ``` What if I could declaratively specify features of the essays I want to write ahead of time? ```  
+      
+    This prototype is that answer. A Python module to allow a TDD approach to writing essays.  
+    
+## Example Syntax
+    ```
+        Document.should.have.section('Introduction')
+        Document.section('Introduction').should.have.length.larger.than(5).paragraphs
+        Document.section.('Introduction').should.precede('Background')
+        Document.section('Background').should.have.subsections(['Sociology', 'Anthropology'])
+        Document.section('Background').should.cite('Graeber 99')    
+        Document.section('Background').should.mention('The importance of a history of Debt') 
+    ```
 
-## Architecture Design 
-    Python + nlp to generate the document structure,
-    write a little unit test framework to test the produced structures.
-
-### Libraries:
-    Spacy, pyparsing
+## Dependencies
+    - Spacy
+    - PyParsing
 
 ## Annotations in the text:
-    Use something not likely to be in the written document to begin with.. 
-    %tag% may be best?
-    Have a pre-processor to:
-        import other files
-        group text into data structures of (tags, [text/subdocuments])
-    Have a processor to strip tags for export,
-        
-    Recognise references (a..., 93)
-    headings, org style: ** Blah
-
-    Annotations need to be applicable for:
-        Document level
-        Chapter level
-        Section Level
-        Subsection level
-        Paragraph level
-        Sentence Level
-
-## Things you could test for:
-    document structure:
-        headings
-        subsections
-        titles
-        lists
-        image references
-    
-    tags { argument, structural, etc }
-    regexs
-    references:
-        amount
-        colocation ( eg: mention(fligstein).with(bourdieu)
-    structure ordering
-    size:
-        wordcount
-        sentence length
-        paragraph leng
-    
-
-
-## Examples (using Chai-style notation):
-    document.should.have.a.section('background')
-    document.should.mention('fligstein')
-    document.section('background').should.mention('bourdieu')
-    document.should.have.a.length.larger.than(10).pages
-   
-    document.section('introduction').should.precede.section('background')
-    document.section('introduction').should.mention('research questions')
-    document.section('introduction').should.have.subsections(3)
-
-    document.should.have.section('blah','bloo','blee')
-    
+    This prototype is not meant to do massive amounts of NLP, merely parse and track emacs .org  
+    files as a quick and easy means to test the concept. To this end, I'm not trying to extract large amounts of  
+    information from the text. I retrieve:
+    - Headings, of the org style of levels of '*'s.
+    - Tags ("%blah%"), that are associated with the nearest paragraph
+    - Citations ('[Graeber, 99]')
     
     
