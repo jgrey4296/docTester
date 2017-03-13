@@ -24,18 +24,35 @@ class Should:
     #Terminals:
     def mention(self,reference):
         """ Check for a citation in the specified section """
-        raise DocException("No mention found",missing=reference)
+        if self.ref.mentions(reference):
+            return self
+        else:        
+            raise DocException("No mention found",missing=reference)
 
+    def cite(self,citation):
+        citation_set = self.ref.get_citations()
+        if citation in citation_set:
+            return self
+        else:
+            raise DocException('No Citation Found: {}'.format(citation))
+    
     def precede(self,name):
         """ Set state for a final test """
+        #go up to parent section, ensure the ref section is before the input name
         raise DocException("No Precedence found for",missing=name)
 
     def section(self,name):
         """ Test for a section, and set state to allow further chaining """
-        raise DocException("No section found",missing=name)
+        return self.ref.section(name)
 
-    def subsections(self,val):
-        raise DocException("Not enough subsections found")
+
+    def subsections(self,vals):
+        if isinstance(vals,list):
+            return [self.ref.section(x) for x in vals]
+        elif isinstance(vals,int):
+            return len(self.ref.ordered_subsections) == vals
+        else:
+            raise DocException("Not enough subsections found")
     
     def chapter(self,name):
         """ Test for a chapter, and set the state for further chaining """
