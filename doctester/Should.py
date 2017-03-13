@@ -88,10 +88,27 @@ class SizedShould(Should):
         self.ref = ref
         self.state = {}
 
-    def larger(self):
+    def __getattr__(self,value):
+        non_terminals = "than at".split(r' ')
+        if value in non_terminals:
+            #non-terminals just return the should again for chaining
+            return self
+        elif value == 'larger':
+            return self._larger()
+        elif value == 'smaller':
+            return self._smaller()
+        elif value == 'equal':
+            return self._equal()
+        else:
+            raise AttributeError('{} not suitable in a should'.format(value))
+
+        
+    def _larger(self):
+        self.state['comp'] = lambda a,b: a > b
         return self
 
-    def smaller(self):
+    def _smaller(self):
+        self.state['comp'] = lambda a,b: a < b
         return self
 
     def equal(self,value):
