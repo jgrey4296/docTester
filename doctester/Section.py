@@ -27,16 +27,7 @@ class Section:
             return Should(self)
         else:
             raise AttributeError('{} not suitable for Section'.format(value))
-        
-    def extract_tags(self):
-        """ Goes through the text, sentence by sentence, 
-        and extracts any tags of the form %alphas% to be associated in metadata with that sentence """
-        return None
 
-    def extract_subsections(self):
-        """ Goes through the text, extracting a subsection tree (as this is written for org file parsing """
-        return None
-        
     def add_paragraph(self,text):
         newParagraph = {'text':nlp(text), 'tags': set(), 'citations': set()}
         self.paragraphs.append(newParagraph)
