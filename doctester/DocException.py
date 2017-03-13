@@ -1,8 +1,13 @@
+"""
+	Defines Exceptions that the Testing Framework can raise
+"""
+
 class DocException(Exception):
     """ The exception class thrown by any doc/should test """
-    
-    def __init__(self,desc,**kwargs):
+
+    def __init__(self, desc, **kwargs):
         """ Initialise the exception, with open keyword args available """
+        super().__init__()
         self.desc = desc
         self.vals = {}
         for key in kwargs:
