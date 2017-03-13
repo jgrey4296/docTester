@@ -80,6 +80,9 @@ class Should:
     
 
 class SizedShould(Should):
+    #Mod this as necessary
+    WordsInAPage = 500
+    
     """ An alternative should for ranges of values, mainly length """
     def __init__(self,ref):
         self.ref = ref
