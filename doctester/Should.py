@@ -12,10 +12,9 @@ class Should:
     def __init__(self, ref):
         self.ref = ref
         self.state = {}
-        #raise Exception("Can't call {} on a should chain".format(name))
 
     def __getattr__(self, value):
-        non_terminals = "have a near come after use".split(r' ')
+        non_terminals = "have a near come after use at".split(r' ')
         if value in non_terminals:
             #non-terminals just return the should again for chaining
             return self
@@ -23,6 +22,8 @@ class Should:
             return self._length()
         elif value == 'subsections':
             return self._subsections
+        elif value == 'least':
+            return self._length().least
         else:
             raise AttributeError('{} not suitable in a should'.format(value))
 
@@ -45,7 +46,28 @@ class Should:
     def precede(self, name):
         """ Set state for a final test """
         #go up to parent section,  ensure the ref section is before the input name
-        raise DocException("No Precedence found for", missing=name)
+        parent = self.ref.get_parent()
+        #Not that elegant, but avoids recursive imports:
+        if parent.is_document():
+            raise Exception('Attempting to specify order of chapter')
+        ordered_titles = [x.title for x in parent.ordered_subsections]
+        try:
+            index_1 = ordered_titles.index(self.ref.title)
+        except ValueError as err:
+            raise DocException('Section can not be found', missing=self.ref.title)
+        try:
+            index_2 = ordered_titles.index(name.lower().strip())
+        except ValueError as err:
+            raise DocException('Section can not be found', missing=name)
+            
+        
+        
+        if index_1 < index_2:
+            return self
+
+        err_msg = "Bad Precedence order: {}({}) <-> {}({})"
+        raise DocException(err_msg.format(self.ref.title, index_1,
+                                          name, index_2))
 
     def section(self, name):
         """ Test for a section,  and set state to allow further chaining """
@@ -54,12 +76,11 @@ class Should:
 
     def _subsections(self, vals):
         """ Boolean check for correct names, or corrent number, of subsections """
-        if isinstance(vals, list):
-            return [self.ref.section(x) for x in vals]
-        elif isinstance(vals, int):
-            return len(self.ref.ordered_subsections) == vals
-        else:
-            raise DocException("Not enough subsections found")
+        if isinstance(vals, list) and all([self.ref.section(x) for x in vals]):
+                return self
+        elif isinstance(vals, int) and len(self.ref.ordered_subsections) == vals:
+                return self
+        raise DocException('Subsection mismatch')
 
     def chapter(self, name):
         """ Test for a chapter,  and set the state for further chaining """
