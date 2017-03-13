@@ -143,9 +143,9 @@ class SizedShould(Should):
             return self
         else:
             err_msg = 'Not Enough words to fulfill page count: {}/({} * {})'
-            raise DocException(err_msg.format((base_wordcount,
-                                               self.state['compVal'],
-                                               SizedShould.WordsInAPage)))
+            raise DocException(err_msg.format(base_wordcount,
+                                              self.state['compVal'],
+                                              SizedShould.WordsInAPage))
 
     def paragraphs(self):
         paragraph_count = self.ref.get_paragraph_count()
