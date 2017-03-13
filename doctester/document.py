@@ -35,6 +35,12 @@ class Document:
         else:
             raise AttributeError('{} Not Suitable for Document'.format(value))
 
+    def is_section(self):
+        return False
+
+    def is_document(self):
+        return True
+        
     def read_files(self):
         for file in self.files:
             fullpath = join(self.directory, file)
@@ -42,7 +48,9 @@ class Document:
             with open(fullpath, 'r') as f:
                 text = f.read()
             #chapters are the same ds as sections
-            self.chapters[title.lower().strip()] = parseText(text)
+            new_chapter = parseText(text)
+            new_chapter.set_parent(self)
+            self.chapters[title.lower().strip()] = new_chapter
 
     def chapter(self, name):
         #Get a chapter from the document, use the same error as 'should'ing if it fails
