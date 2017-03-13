@@ -42,13 +42,14 @@ class DocTestRunner:
         for test in fail_tests:
             try:
                 result = getattr(self,test)()
-                if result is not None and result != False:
-                    logging.warning('{} : Did not return false'.format(test))
+                if result is None or result != False:
+                    logging.info('{} {} : {}'.format(DocTestRunner.TAB,
+                                                                          DocTestRunner.CROSS,
+                                                                          test))
                     failed += 1
             except DocException as e:
                 passed += 1
                 logging.info("{} {} : {}".format(DocTestRunner.TAB,DocTestRunner.TICK, test))
                     
                 
-        logging.info("\n\nFinished. {}/{} Passed. {}/{} Failed.".format(passed,total,failed,total)) 
-
+        logging.info("\n\nFinished. {}/{} Passed. {}/{} Failed.".format(passed,total,failed,total))
