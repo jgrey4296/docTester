@@ -21,15 +21,16 @@ This prototype is that answer. A Python module to allow a TDD approach to writin
 ```
 
 ## Dependencies
-    - Spacy
-    - PyParsing
+- Spacy
+- PyParsing
 
 ## Annotations in the text:
-    This prototype is not meant to do massive amounts of NLP, merely parse and track emacs .org  
-    files as a quick and easy means to test the concept. To this end, I'm not trying to extract large amounts of  
-    information from the text. I retrieve:
-    - Headings, of the org style of levels of '*'s.
-    - Tags ("%blah%"), that are associated with the nearest paragraph
-    - Citations ('[Graeber, 99]')
+
+This prototype is not meant to do massive amounts of NLP, merely parse and track emacs .org  
+files as a quick and easy means to test the concept. To this end, I'm not trying to extract large amounts of  
+information from the text. I retrieve:
+- Headings, of the org style of levels of '*'s.
+- Tags ("%blah%"), that are associated with the nearest paragraph
+- Citations ('[Graeber, 99]')
     
     
