@@ -4,58 +4,74 @@ from test_context import doctester as dt
 from doctester.Section import Section
 from doctester.Should import Should
 
-class Section_Tests(unittest.TestCase):
+class Should_Tests(unittest.TestCase):
 
-    #use testcase snippets
-    def test_initialise(self):
-        aSection = Section('aTitle',1)
-        self.assertIsInstance(aSection,Section)
-        self.assertEqual(aSection.title,'aTitle')
-        self.assertEqual(aSection.level,1)
-        self.assertTrue(aSection.is_section())
-        self.assertFalse(aSection.is_document())
-        
-    def test_should_retrieval(self):
-        aSection = Section('aTitle',1)
-        self.assertIsInstance(aSection.should, Should)
-        self.assertEqual(aSection.should.ref,aSection)
-
-    def test_set_parent(self):
-        aSection = Section('aTitle',1)
-        anotherSection = Section('AnotherTitle',2)
-        self.assertIsNone(anotherSection.get_parent())
-        anotherSection.set_parent(aSection)
-        self.assertIsNotNone(anotherSection.get_parent())
-                            
-    def test_bad_set_parent(self):
-        aSection = Section('aTitle',1)
-        anotherSection = Section('AnotherTitle',2)
-        self.assertIsNone(aSection.get_parent())
-        with self.assertRaises(Exception):
-            aSection.set_parent(anotherSection)
-
-    def test_tags(self):
-        self.assertTrue(True)
-
-
-    def test_paragraphs(self):
-        
+    def test_existence(self):
         self.assertTrue(True)
         
-    def test_subsection(self):
-        
+    def test_mention(self):
+        self.assertTrue(True)
+            
+    def test_cite(self):
         self.assertTrue(True)
         
-    def test_get_paragraphs(self):
-        
+    def test_precede(self):
+        self.assertTrue(True)
+
+    def test_section(self):
         self.assertTrue(True)
         
-    def test_counts(self):
-        
+    def test_subsections(self):
         self.assertTrue(True)
         
-    def test_mentions(self):
+    def test_chapter(self):
+        self.assertTrue(True)
         
+    def test_sections(self):
+        self.assertTrue(True)
+        
+    def test_tag(self):
+        self.assertTrue(True)
+        
+    def test_regex(self):
+        self.assertTrue(True)
+        
+    def test_length(self):
+        self.assertTrue(True)
+        
+class SizedShould_Tests(unittest.TestCase):
+
+    def test_larger(self):
+        self.assertTrue(True)
+        
+    def test_smaller(self):
+        self.assertTrue(True)
+        
+    def test_equal(self):
+        self.assertTrue(True)
+        
+    def test_least(self):
+        self.assertTrue(True)
+        
+    def test_most(self):
+        self.assertTrue(True)
+        
+    def test_than(self):
+        self.assertTrue(True)
+        
+    def test_pages(self):
+        self.assertTrue(True)
+        
+    def test_sentences(self):
+        self.assertTrue(True)
+
+    def test_words(self):
+        self.assertTrue(True)
+        
+    def test_citations(self):
+        self.assertTrue(True)
+    
+    def test_subsections_len(self):
         self.assertTrue(True)
         
     
