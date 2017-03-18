@@ -71,10 +71,21 @@ class Section:
         self.tags.add(ftext)
         return self
 
-    def has_tag(self, text):
+    def has_tag(self,text):
         ftext = text.lower().strip()
-        return ftext in self.tags
+        if ftext in self.tags:
+            return True
+        if any([ftext in p['tags'] for p in self.paragraphs]):
+            return True
+        else:
+            return any([sub.has_tag(ftext) for sub in self.ordered_subsections])
 
+    def has_citation(self,text):
+        ftext = text.lower().strip()
+        return any([ftext in p['citations'] for p in self.paragraphs]) \
+            or any([sub.has_citation(ftext) for sub in self.ordered_subsections])
+            
+        
     def add_paragraph(self, text):
         new_paragraph = {'text':NLP(text), 'tags': set(), 'citations': set()}
         self.paragraphs.append(new_paragraph)
