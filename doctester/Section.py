@@ -38,6 +38,14 @@ class Section:
     def is_document(self):
         return False
 
+    def section(self, value):
+        """ Get a subsection of a section """
+        fvalue = value.lower().strip()
+        if fvalue in self.named_subsections:
+            return self.named_subsections[fvalue]
+        else:
+            raise DocException("Subsection not found", missing=value)
+    
     def add_subsection(self, title, level):
         """ Add a new subsection to the current section, or a set indentation level """
         ftitle = title.lower().strip()
@@ -53,12 +61,15 @@ class Section:
     def set_parent(self,ref):
         if self.parent_section is not None:
             raise Exception('Attempting to redefine parent section')
+        elif ref.is_section() and ref.level >= self.level:
+            raise Exception('Attempting to set a parent that is of a bad level')
         else:
             self.parent_section = ref
     
     def add_tag(self, text):
         ftext = text.lower().strip()
         self.tags.add(ftext)
+        return self
 
     def has_tag(self, text):
         ftext = text.lower().strip()
@@ -77,13 +88,6 @@ class Section:
         initial.extend([x for ss in self.ordered_subsections for x in ss.get_all_paragraphs()])
         return initial
 
-    def section(self, value):
-        """ Get a subsection of a section """
-        fvalue = value.lower().strip()
-        if fvalue in self.named_subsections:
-            return self.named_subsections[fvalue]
-        else:
-            raise DocException("Subsection not found", missing=value)
 
     def get_sentence_count(self):
         """ Get the total sentence count of this sections paragraphs,
