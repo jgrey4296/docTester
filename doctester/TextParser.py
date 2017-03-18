@@ -50,8 +50,6 @@ tag.setParseAction(lambda toks: TAG(" ".join(toks[:])))
 citation.setParseAction(lambda toks: CITATION(" ".join(toks[:])))
 #pylint: enable=unnecessary-lambda
 
-
-
 #pylint: disable=too-many-branches
 def parseText(text):
     """ 
