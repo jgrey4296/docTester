@@ -34,12 +34,13 @@ class Section_Tests(unittest.TestCase):
         self.assertIsNone(aSection.get_parent())
         with self.assertRaises(Exception):
             aSection.set_parent(anotherSection)
-
+            
     def test_tags(self):
         aSection = Section('aTitle',1)
         aSection.add_tag('blah').add_tag('bloo')
         self.assertTrue(aSection.has_tag('blah'))
         self.assertTrue(aSection.has_tag('bloo'))
+        self.assertFalse(aSection.has_tag('blee'))
 
     def test_paragraphs(self):
         aSection = Section('aTitle',1)
@@ -94,14 +95,36 @@ class Section_Tests(unittest.TestCase):
         aSection.add_paragraph('This is the first sections paragraph. And a second sentence.')
         subSection.add_paragraph('This is a sub section paragraph. The weather today is fairly nice.')
         self.assertEqual(aSection.get_word_count(),26)
-            
-    def test_mentions(self):
-        
-        self.assertTrue(True)
-        
-    def test_citations(self):
-        self.assertTrue(True)
 
+    def test_tags(self):
+        aSection = Section('aTitle',1)
+        aSection.add_tag('blah')
+        self.assertTrue(aSection.has_tag('blah'))
+        self.assertFalse(aSection.has_tag('bloo'))
+        
+    def test_deep_tags_paragraphs(self):
+        aSection = Section('aTitle',1)
+        aParagraph = aSection.add_paragraph('This is some random text')
+        self.assertIn('text',aParagraph)
+        self.assertIn('tags',aParagraph)
+        self.assertIn('citations',aParagraph)
+        aParagraph['tags'].add('atag')
+        self.assertIn('atag',aParagraph['tags'])
+        self.assertTrue(aSection.has_tag('aTag'))
+        self.assertFalse(aSection.has_tag('bloo'))
+
+    def test_deep_tags_sections(self):
+        aSection = Section('aTitle',1)
+        aSubSection = aSection.add_subsection('subsection',2)
+        aSubSection.add_tag('blah')
+        self.assertTrue(aSection.has_tag('blah'))
+        
+                
+    def test_citations_paragraphs(self):
+        aSection = Section('aTitle',1)
+        aParagraph = aSection.add_paragraph('this is some text')
+        aParagraph['citations'].add('graeber 99')
+        self.assertTrue(aSection.has_citation('graeber 99'))
         
 if __name__ == "__main__":
       LOGLEVEL = logging.DEBUG
