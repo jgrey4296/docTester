@@ -1,66 +1,43 @@
 import unittest
 import logging
 from test_context import doctester as dt
+from doctester.Document import Document
 from doctester.Section import Section
 from doctester.Should import Should
 
-class Section_Tests(unittest.TestCase):
+class Document_Tests(unittest.TestCase):
 
-    #use testcase snippets
-    def test_initialise(self):
-        aSection = Section('aTitle',1)
-        self.assertIsInstance(aSection,Section)
-        self.assertEqual(aSection.title,'aTitle')
-        self.assertEqual(aSection.level,1)
-        self.assertTrue(aSection.is_section())
-        self.assertFalse(aSection.is_document())
+    def setup(self):
+        self.doc = Document('./data')
+    
+    def test_existence(self):
+        self.assertIsInstance(self.doc,Document)
+        self.assertFalse(self.doc.is_section())
+        self.assertTrue(self.doc.is_document())
 
-        
-    def test_should_retrieval(self):
-        aSection = Section('aTitle',1)
-        self.assertIsInstance(aSection.should, Should)
-        self.assertEqual(aSection.should.ref,aSection)
-
-    def test_set_parent(self):
-        aSection = Section('aTitle',1)
-        anotherSection = Section('AnotherTitle',2)
-        self.assertIsNone(anotherSection.get_parent())
-        anotherSection.set_parent(aSection)
-        self.assertIsNotNone(anotherSection.get_parent())
-                            
-    def test_bad_set_parent(self):
-        aSection = Section('aTitle',1)
-        anotherSection = Section('AnotherTitle',2)
-        self.assertIsNone(aSection.get_parent())
-        with self.assertRaises(Exception):
-            aSection.set_parent(anotherSection)
-
-    def test_tags(self):
+    def test_found_files(self):
         self.assertTrue(True)
 
+    def test_chapter(self):
+        self.assertTrue(True)
 
-    def test_paragraphs(self):
-        
+    def test_found_files(self):
         self.assertTrue(True)
-        
-    def test_subsection(self):
-        
+
+    def test_word_count(self):
         self.assertTrue(True)
-        
-    def test_get_paragraphs(self):
-        
+
+    def test_sentence_count(self):
         self.assertTrue(True)
-        
-    def test_counts(self):
-        
+
+    def test_citations(self):
         self.assertTrue(True)
-        
+
     def test_mentions(self):
-        
         self.assertTrue(True)
-        
-    
-    
+
+
+
 
         
     
