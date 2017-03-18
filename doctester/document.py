@@ -15,7 +15,7 @@ class Document:
     FILETYPE = '.org'
 
 
-    def __init__(self, directory):
+    def __init__(self, directory=None):
         """ Given a directory, load in all files of FILETYPE, and create indiv chapters for them """
         if not isdir(directory):
             raise Exception("Bad Directory Specification: {}".format(directory))
@@ -69,7 +69,7 @@ class Document:
     def get_paragraph_count(self):
         return sum([x.get_paragraph_count() for x in self.chapters.values()])
 
-    def get_citations(self):
+    def citations(self):
         """ Get the Union of all citation sets of all sub chapters/sections """
         base_set = set()
         citation_sets = [x.get_citations() for x in self.chapters.values()]
