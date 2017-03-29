@@ -80,7 +80,7 @@ class Should:
                 return self
         elif isinstance(vals, int) and len(self.ref.ordered_subsections) == vals:
                 return self
-        raise DocException('Subsection mismatch')
+        raise DocException('Subsection mismatch: {} / {}'.format(vals,len(self.ref.ordered_subsections)))
 
     def chapter(self, name):
         """ Test for a chapter,  and set the state for further chaining """
