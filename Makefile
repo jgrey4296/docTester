@@ -1,7 +1,7 @@
 INSTALL_DIR= $(shell echo $(JG_PYLIBS))
 LIBNAME=doctester
 
-install : clean
+install : clean uninstall
 	cp -r ./${LIBNAME} ${INSTALL_DIR}/${LIBNAME}
 
 uninstall :
