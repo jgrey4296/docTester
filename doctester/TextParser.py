@@ -62,7 +62,13 @@ def parseText(text):
     currentSection = None
     while len(separated) > 0:
         current = separated.pop(0)
-        results = ROOT.parseString(current)
+        if current == "":
+            continue
+        try:
+            results = ROOT.parseString(current)
+        except Exception as e:
+            logging.info('Parser Issue with: {}'.format(current))
+            raise e
         #parsed a header, create a section
         if len(results) == 0:
             #pylint: disable=redefined-variable-type

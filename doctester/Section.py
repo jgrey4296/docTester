@@ -38,6 +38,12 @@ class Section:
     def is_document(self):
         return False
 
+    def sections(self):
+        return self.ordered_subsections.copy()
+
+    def titleIs(self,a):
+        return self.title == a
+    
     def section(self, value):
         """ Get a subsection of a section """
         fvalue = value.lower().strip()

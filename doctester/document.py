@@ -21,6 +21,7 @@ class Document:
             raise Exception("Bad Directory Specification: {}".format(directory))
         read_files = listdir(directory)
         org_files = [x for x in read_files if splitext(x)[1] == Document.FILETYPE]
+        logging.info('Selected files: {}'.format(org_files))
         self.directory = directory
         self.files = org_files
         self.chapters = {}
@@ -48,7 +49,12 @@ class Document:
             with open(fullpath, 'r') as f:
                 text = f.read()
             #chapters are the same ds as sections
-            new_chapter = parseText(text)
+            try:
+                new_chapter = parseText(text)
+            except Exception as e:
+                logging.info("Issue with: {}".format(file))
+                raise e
+                
             new_chapter.set_parent(self)
             self.chapters[title.lower().strip()] = new_chapter
 
@@ -83,3 +89,6 @@ class Document:
             if chapter.mentions(reference):
                 return True
         return False
+
+    def chapters(self):
+        return list(self.chapters.values())
