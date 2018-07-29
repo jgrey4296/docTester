@@ -20,7 +20,7 @@ class Document:
         if not isdir(directory):
             raise Exception("Bad Directory Specification: {}".format(directory))
         read_files = listdir(directory)
-        org_files = [x for x in read_files if splitext(x)[1] == Document.FILETYPE]
+        org_files = [x for x in read_files if splitext(x)[1] == Document.FILETYPE and x[0] != '#']
         logging.info('Selected files: {}'.format(org_files))
         self.directory = directory
         self.files = org_files

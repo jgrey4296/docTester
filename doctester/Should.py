@@ -92,7 +92,8 @@ class Should:
 
     def tag(self, tag):
         """ Test a selected Document/Section/Subsection/Paragraph/Sentence for a tag """
-        raise DocException("Tag not found", missing=tag)
+        if not self.ref.has_tag(tag):
+            raise DocException("Tag not found", missing=tag)
 
     def regex(self, reg):
         """ Test a selected Doc/Sec/SubSec/Para/Sentence for a regex """
