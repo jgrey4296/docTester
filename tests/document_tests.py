@@ -9,7 +9,7 @@ class Document_Tests(unittest.TestCase):
 
     def setup(self):
         self.doc = Document('./data')
-    
+
     def test_existence(self):
         self.assertIsInstance(self.doc,Document)
         self.assertFalse(self.doc.is_section())
@@ -35,16 +35,6 @@ class Document_Tests(unittest.TestCase):
 
     def test_mentions(self):
         self.assertTrue(True)
-
-
-
-
-        
-    
-    
-    
-
-
 
 
 

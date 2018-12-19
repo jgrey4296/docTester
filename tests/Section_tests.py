@@ -15,7 +15,7 @@ class Section_Tests(unittest.TestCase):
         self.assertTrue(aSection.is_section())
         self.assertFalse(aSection.is_document())
 
-        
+
     def test_should_retrieval(self):
         aSection = Section('aTitle',1)
         self.assertIsInstance(aSection.should, Should)
@@ -27,14 +27,14 @@ class Section_Tests(unittest.TestCase):
         self.assertIsNone(anotherSection.get_parent())
         anotherSection.set_parent(aSection)
         self.assertIsNotNone(anotherSection.get_parent())
-                            
+
     def test_bad_set_parent(self):
         aSection = Section('aTitle',1)
         anotherSection = Section('AnotherTitle',2)
         self.assertIsNone(aSection.get_parent())
         with self.assertRaises(Exception):
             aSection.set_parent(anotherSection)
-            
+
     def test_tags(self):
         aSection = Section('aTitle',1)
         aSection.add_tag('blah').add_tag('bloo')
@@ -53,7 +53,7 @@ class Section_Tests(unittest.TestCase):
         self.assertEqual(len(paragraphs),2)
         self.assertEqual(paragraphs[0]['text'].text,"this is a test text.")
         self.assertEqual(paragraphs[1]['text'].text,"this is another test text.")
-        
+
     def test_subsection(self):
         aSection = Section('aTitle',1)
         newSection = aSection.add_subsection('other',2)
@@ -66,7 +66,7 @@ class Section_Tests(unittest.TestCase):
         aSection = Section('aTitle',1)
         with self.assertRaises(Exception):
             aSection.add_subsection('other',1)
-                    
+
     def test_get_all_paragraphs(self):
         aSection = Section('aTitle',1)
         subSection = aSection.add_subsection('other',2)
@@ -74,7 +74,7 @@ class Section_Tests(unittest.TestCase):
         paragraphs = aSection.get_all_paragraphs()
         self.assertEqual(len(paragraphs),1)
         self.assertEqual(paragraphs[0]['text'].text, 'This is a sub section paragraph')
-        
+
     def test_local_sentence_count(self):
         aSection = Section('aTitle',1)
         aSection.add_paragraph('This is a single sentence.')
@@ -101,7 +101,7 @@ class Section_Tests(unittest.TestCase):
         aSection.add_tag('blah')
         self.assertTrue(aSection.has_tag('blah'))
         self.assertFalse(aSection.has_tag('bloo'))
-        
+
     def test_deep_tags_paragraphs(self):
         aSection = Section('aTitle',1)
         aParagraph = aSection.add_paragraph('This is some random text')
@@ -118,14 +118,14 @@ class Section_Tests(unittest.TestCase):
         aSubSection = aSection.add_subsection('subsection',2)
         aSubSection.add_tag('blah')
         self.assertTrue(aSection.has_tag('blah'))
-        
-                
+
+
     def test_citations_paragraphs(self):
         aSection = Section('aTitle',1)
         aParagraph = aSection.add_paragraph('this is some text')
         aParagraph['citations'].add('graeber 99')
         self.assertTrue(aSection.has_citation('graeber 99'))
-        
+
 if __name__ == "__main__":
       LOGLEVEL = logging.DEBUG
       logFileName = "section_tests.log"
