@@ -1,8 +1,9 @@
 """
 	Defines Should Variants that enable chaining assertion syntax
 """
+#pylint: disable=no-self-use
 import logging as root_logger
-from doctester.DocException import DocException
+from doctester.doc_exception import DocException
 logging = root_logger.getLogger(__name__)
 
 
@@ -45,7 +46,7 @@ class Should:
 
     def precede(self, name):
         """ Set state for a final test """
-        #go up to parent section,  ensure the ref section is before the input name
+        #go up to parent section, ensure the ref section is before the input name
         parent = self.ref.get_parent()
         #Not that elegant, but avoids recursive imports:
         if parent.is_document():
@@ -59,9 +60,9 @@ class Should:
             index_2 = ordered_titles.index(name.lower().strip())
         except ValueError as err:
             raise DocException('Section can not be found', missing=name)
-            
-        
-        
+
+
+
         if index_1 < index_2:
             return self
 
@@ -70,20 +71,21 @@ class Should:
                                           name, index_2))
 
     def section(self, name):
-        """ Test for a section,  and set state to allow further chaining """
+        """ Test for a section, and set state to allow further chaining """
         return self.ref.section(name)
 
 
     def _subsections(self, vals):
         """ Boolean check for correct names, or corrent number, of subsections """
         if isinstance(vals, list) and all([self.ref.section(x) for x in vals]):
-                return self
+            return self
         elif isinstance(vals, int) and len(self.ref.ordered_subsections) == vals:
-                return self
-        raise DocException('Subsection mismatch: {} / {}'.format(vals,len(self.ref.ordered_subsections)))
+            return self
+        raise DocException('Subsection mismatch: {} / {}'.format(vals,
+                                                                 len(self.ref.ordered_subsections)))
 
     def chapter(self, name):
-        """ Test for a chapter,  and set the state for further chaining """
+        """ Test for a chapter, and set the state for further chaining """
         return self.ref.chapter(name)
 
     def sections(self, *args):
@@ -137,21 +139,25 @@ class SizedShould(Should):
         return self
 
     def equal(self):
+        """ Test if the comparison object equals the one passed in """
         self.state['comp'] = lambda a, b: a == b
         return self
 
     def least(self, value):
+        """ Test if the comparison object is greater than the value"""
         self.state['comp'] = lambda a, b: a >= b
         self.state['compVal'] = value
         return self
 
     def most(self, value):
+        """ Test if the comparison object is less than the value """
         self.state['comp'] = lambda a, b: a <= b
         self.state['compVal'] = value
         return self
 
 
     def than(self, value):
+        """ Assign a value to be compared against """
         #although it comes first in the chain x.should.have.length.larger.than.pages
         #actually sets up the b value in the comparison
         self.state['compVal'] = value
@@ -159,6 +165,7 @@ class SizedShould(Should):
 
     #The things that can be checked for size:
     def pages(self):
+        """ Test against a given page count  """
         base_wordcount = self.ref.get_word_count()
         compare_to = SizedShould.WordsInAPage * self.state['compVal']
         if self.state['comp'](base_wordcount, compare_to):
@@ -170,6 +177,7 @@ class SizedShould(Should):
                                               SizedShould.WordsInAPage))
 
     def paragraphs(self):
+        """ Test against a given paragraph count """
         paragraph_count = self.ref.get_paragraph_count()
         if self.state['comp'](paragraph_count, self.state['compVal']):
             return self
@@ -179,6 +187,7 @@ class SizedShould(Should):
                                               self.state['compVal']))
 
     def sentences(self):
+        """ Test against a given sentence count """
         sentence_count = self.ref.get_sentence_count()
         if self.state['comp'](sentence_count, self.state['compVal']):
             return self
@@ -188,6 +197,7 @@ class SizedShould(Should):
                                               self.state['compVal']))
 
     def words(self):
+        """ Test against a given word count """
         word_count = self.ref.get_word_count()
         if self.state['comp'](word_count, self.state['compVal']):
             return self
@@ -196,6 +206,7 @@ class SizedShould(Should):
                                                                   self.state['compVal']))
 
     def citations(self):
+        """ Test against a given citation count """
         cite_count = len(self.ref.get_citations())
         if self.state['comp'](cite_count, self.state['compVal']):
             return self
@@ -205,6 +216,7 @@ class SizedShould(Should):
                                               self.state['compVal']))
 
     def _subsections_len(self):
+        """ Test against a given subsection count """
         num_sections = len(self.ref.subsections)
         if self.state['comp'](num_sections, self.state['compVal']):
             return self

@@ -1,10 +1,10 @@
 """
 Module Defines the Base Class for Automating Document Tests
 """
+#pylint: disable=too-few-public-methods
 import logging as root_logger
-from doctester.DocException import DocException
+from doctester.doc_exception import DocException
 logging = root_logger.getLogger(__name__)
-
 
 class DocTestRunner:
     """ The main test runner class. Subclass this to add tests """
@@ -24,7 +24,7 @@ class DocTestRunner:
     TICK = OKGREEN + '✓' + ENDC
     CROSS = FAILC + 'X' + ENDC
     TAB = "	"
-    
+
     def __call__(self):
         """ The main call to run tests """
         passed = 0
@@ -65,7 +65,7 @@ class DocTestRunner:
         for test in fail_tests:
             try:
                 result = getattr(self, test)()
-                if result is None or result != False:
+                if result is None or result is False:
                     logging.info('------------------------------')
                     logging.info('{}{} {} : {}'.format(DocTestRunner.TAB,
                                                        DocTestRunner.TAB,

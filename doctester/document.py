@@ -1,12 +1,13 @@
 """
 	Defines the Document class, top level collection of texts
 """
+#pylint: disable=no-self-use
 import logging as root_logger
 from os.path import join, isdir, splitext
 from os import listdir
-from doctester.DocException import DocException
-from doctester.Should import Should
-from doctester.TextParser import parseText
+from doctester.doc_exception import DocException
+from doctester.should import Should
+from doctester.text_parser import parseText
 logging = root_logger.getLogger(__name__)
 
 class Document:
@@ -22,9 +23,9 @@ class Document:
         read_files = listdir(directory)
         org_files = [x for x in read_files if splitext(x)[1] == Document.FILETYPE and x[0] != '#']
         logging.info('Selected files: {}'.format(org_files))
-        self.directory = directory
-        self.files = org_files
-        self.chapters = {}
+        self._directory = directory
+        self._files = org_files
+        self._chapters = {}
         #Actually read in all found files
         self.read_files()
 
@@ -37,14 +38,17 @@ class Document:
             raise AttributeError('{} Not Suitable for Document'.format(value))
 
     def is_section(self):
+        """ Is this object a section """
         return False
 
     def is_document(self):
+        """ Is this object a document """
         return True
-        
+
     def read_files(self):
-        for file in self.files:
-            fullpath = join(self.directory, file)
+        """ Open and parse the files in the document's directory """
+        for file in self._files:
+            fullpath = join(self._directory, file)
             title = splitext(file)[0]
             with open(fullpath, 'r') as f:
                 text = f.read()
@@ -54,41 +58,45 @@ class Document:
             except Exception as e:
                 logging.info("Issue with: {}".format(file))
                 raise e
-                
+
             new_chapter.set_parent(self)
-            self.chapters[title.lower().strip()] = new_chapter
+            self._chapters[title.lower().strip()] = new_chapter
 
     def chapter(self, name):
-        #Get a chapter from the document, use the same error as 'should'ing if it fails
+        """ Get a chapter from the document, use the same error as 'should'ing if it fails """
         fname = name.lower().strip()
-        if fname in self.chapters:
-            return self.chapters[fname]
+        if fname in self._chapters:
+            return self._chapters[fname]
         else:
             raise DocException("No Chapter Found", missing=name)
 
     def get_word_count(self):
-        return sum([x.get_word_count() for x in self.chapters.values()])
+        """ Get the number of words in all the chapters of the document """
+        return sum([x.get_word_count() for x in self._chapters.values()])
 
     def get_sentence_count(self):
-        return sum([x.get_sentence_count() for x in self.chapters.values()])
+        """ Get the number of sentences in the chapters of the document """
+        return sum([x.get_sentence_count() for x in self._chapters.values()])
 
     def get_paragraph_count(self):
-        return sum([x.get_paragraph_count() for x in self.chapters.values()])
+        """ Get the number of paragraphs in the chapters of the document """
+        return sum([x.get_paragraph_count() for x in self._chapters.values()])
 
     def citations(self):
         """ Get the Union of all citation sets of all sub chapters/sections """
         base_set = set()
-        citation_sets = [x.get_citations() for x in self.chapters.values()]
+        citation_sets = [x.get_citations() for x in self._chapters.values()]
         for chapter in citation_sets:
             base_set = base_set.union(chapter)
         return base_set
 
     def mentions(self, reference):
         """ Test for a literal string in the documents chapters/sections """
-        for chapter in self.chapters.values():
+        for chapter in self._chapters.values():
             if chapter.mentions(reference):
                 return True
         return False
 
     def chapters(self):
-        return list(self.chapters.values())
+        """ Get the individual chapters of the document as a list """
+        return list(self._chapters.values())

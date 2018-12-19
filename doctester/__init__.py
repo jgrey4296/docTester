@@ -1,4 +1,8 @@
-from doctester.Document import Document
-from doctester.DocException import DocException
-from doctester.DocTestRunner import DocTestRunner
-from doctester.Should import SizedShould
+"""
+Module for creating unit tests of written documents
+instead of code
+"""
+from doctester.document import Document
+from doctester.doc_exception import DocException
+from doctester.doc_test_runner import DocTestRunner
+from doctester.should import SizedShould

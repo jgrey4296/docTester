@@ -1,10 +1,11 @@
 """
 	The Main Section class to hold text, references and tags
 """
+#pylint: disable=no-self-use
 import logging as root_logger
 import spacy
-from doctester.DocException import DocException
-from doctester.Should import Should
+from doctester.doc_exception import DocException
+from doctester.should import Should
 
 logging = root_logger.getLogger(__name__)
 NLP = spacy.load('en')
@@ -14,15 +15,15 @@ class Section:
     """ An individual section of a document """
     def __init__(self, title, level):
         #the name of the section / chapter
-        self.title = title
+        self._title = title
         #Any extracted tags and sections from the text
-        self.level = level
-        self.parent_section = None
+        self._level = level
+        self._parent_section = None
         #paragraphs hold tags and citations fields
-        self.paragraphs = []
-        self.tags = set()
-        self.ordered_subsections = []
-        self.named_subsections = {}
+        self._paragraphs = []
+        self._tags = set()
+        self._ordered_subsections = []
+        self._named_subsections = {}
 
     def __getattr__(self, value):
         """ Overrides the default getattr to allow something.should,
@@ -33,76 +34,88 @@ class Section:
             raise AttributeError('{} not suitable for Section'.format(value))
 
     def is_section(self):
+        """ is this object a section"""
         return True
 
     def is_document(self):
+        """ is this object a document"""
         return False
 
     def sections(self):
-        return self.ordered_subsections.copy()
+        """ Get the subections of this object"""
+        return self._ordered_subsections.copy()
 
-    def titleIs(self,a):
-        return self.title == a
-    
+    def title_is(self, a):
+        """ Is this title of this object a? """
+        return self._title == a
+
     def section(self, value):
         """ Get a subsection of a section """
         fvalue = value.lower().strip()
-        if fvalue in self.named_subsections:
-            return self.named_subsections[fvalue]
+        if fvalue in self._named_subsections:
+            return self._named_subsections[fvalue]
         else:
             raise DocException("Subsection not found", missing=value)
-    
+
     def add_subsection(self, title, level):
         """ Add a new subsection to the current section, or a set indentation level """
         ftitle = title.lower().strip()
         new_section = Section(ftitle, level)
         new_section.set_parent(self)
-        self.ordered_subsections.append(new_section)
-        self.named_subsections[ftitle] = new_section
+        self._ordered_subsections.append(new_section)
+        self._named_subsections[ftitle] = new_section
         return new_section
 
     def get_parent(self):
-        return self.parent_section
+        """ Get the parent section of this object """
+        return self._parent_section
 
-    def set_parent(self,ref):
-        if self.parent_section is not None:
+    def set_parent(self, ref):
+        """ Assign an object to be the parent of this section """
+        if self._parent_section is not None:
             raise Exception('Attempting to redefine parent section')
-        elif ref.is_section() and ref.level >= self.level:
+        elif ref.is_section() and ref.level >= self._level:
             raise Exception('Attempting to set a parent that is of a bad level')
         else:
-            self.parent_section = ref
-    
+            self._parent_section = ref
+
     def add_tag(self, text):
+        """ Add a descriptive tag to this section"""
         ftext = text.lower().strip()
-        self.tags.add(ftext)
+        self._tags.add(ftext)
         return self
 
-    def has_tag(self,text):
+    def has_tag(self, text):
+        """ Does this object have a particular tag? """
         ftext = text.lower().strip()
-        if ftext in self.tags:
+        if ftext in self._tags:
             return True
-        if any([ftext in p['tags'] for p in self.paragraphs]):
+        if any([ftext in p['tags'] for p in self._paragraphs]):
             return True
         else:
-            return any([sub.has_tag(ftext) for sub in self.ordered_subsections])
+            return any([sub.has_tag(ftext) for sub in self._ordered_subsections])
 
-    def has_citation(self,text):
+    def has_citation(self, text):
+        """ Does this object have a specific citation """
         ftext = text.lower().strip()
-        return any([ftext in p['citations'] for p in self.paragraphs]) \
-            or any([sub.has_citation(ftext) for sub in self.ordered_subsections])
-            
-        
+        return any([ftext in p['citations'] for p in self._paragraphs]) \
+            or any([sub.has_citation(ftext) for sub in self._ordered_subsections])
+
+
     def add_paragraph(self, text):
+        """ Add a new paragraph to this section """
         new_paragraph = {'text':NLP(text), 'tags': set(), 'citations': set()}
-        self.paragraphs.append(new_paragraph)
+        self._paragraphs.append(new_paragraph)
         return new_paragraph
 
     def get_paragraphs(self):
-        return self.paragraphs
+        """ Get the paragraphs of this section"""
+        return self._paragraphs
 
     def get_all_paragraphs(self):
-        initial = self.paragraphs.copy()
-        initial.extend([x for ss in self.ordered_subsections for x in ss.get_all_paragraphs()])
+        """ Get all the paragraphs of all the subsections of this object """
+        initial = self._paragraphs.copy()
+        initial.extend([x for ss in self._ordered_subsections for x in ss.get_all_paragraphs()])
         return initial
 
 
@@ -110,37 +123,37 @@ class Section:
         """ Get the total sentence count of this sections paragraphs,
         and sub-sections sentence counts """
         base_count = 0
-        base_count += sum([len(list(x['text'].sents)) for x in self.paragraphs])
-        base_count += sum([x.get_sentence_count() for x in self.ordered_subsections])
+        base_count += sum([len(list(x['text'].sents)) for x in self._paragraphs])
+        base_count += sum([x.get_sentence_count() for x in self._ordered_subsections])
         return base_count
 
     def get_word_count(self):
         """ Get the total word count of paragraphs + subsections """
         base_count = 0
-        base_count += sum([len(x['text']) for x in self.paragraphs])
-        base_count += sum([x.get_word_count() for x in self.ordered_subsections])
+        base_count += sum([len(x['text']) for x in self._paragraphs])
+        base_count += sum([x.get_word_count() for x in self._ordered_subsections])
         return base_count
 
     def get_paragraph_count(self):
         """ Get the total paragraph count of this section + subsections """
-        base_count = len(self.paragraphs)
-        base_count += sum([x.get_paragraph_count() for x in self.ordered_subsections])
+        base_count = len(self._paragraphs)
+        base_count += sum([x.get_paragraph_count() for x in self._ordered_subsections])
         return base_count
 
     def get_citations(self):
         """ Get the union set of all citations in paragraphs + subsections """
         base_set = set()
-        paragraph_sets = [x['citations'] for x in self.paragraphs]
-        subsection_sets = [x.get_citations() for x in self.ordered_subsections]
+        paragraph_sets = [x['citations'] for x in self._paragraphs]
+        subsection_sets = [x.get_citations() for x in self._ordered_subsections]
         base_set = base_set.union(*paragraph_sets, *subsection_sets)
         return base_set
 
     def mentions(self, reference):
         """ Check for a string literal in the text of the section + subsections """
-        for paragraph in self.paragraphs:
+        for paragraph in self._paragraphs:
             if reference in paragraph['text'].text:
                 return True
-        for section in self.ordered_subsections:
+        for section in self._ordered_subsections:
             if section.mentions(reference):
                 return True
 

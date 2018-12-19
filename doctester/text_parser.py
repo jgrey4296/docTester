@@ -29,14 +29,14 @@ tag = s(pp.Literal('%')) \
 
 citation = s(pp.Literal('[')) \
            + pp.OneOrMore(pp.Word(pp.alphas)) \
-           + s(pp.Literal(',')) \
+           + s(pp.Literal(', ')) \
            + pp.Word(pp.nums) \
            + s(pp.Literal(']'))
 
 heading_stars = pp.lineStart + pp.OneOrMore(pp.Literal('*'))
 heading = heading_stars + pp.restOfLine
 
-paragraph = pp.OneOrMore(s(pp.Word(pp.alphas+'.!"\'()+-_=@#$<>,?/;:')) | citation | tag)
+paragraph = pp.OneOrMore(s(pp.Word(pp.alphas+'.!"\'()+-_=@#$<>, ?/;:')) | citation | tag)
 
 #The main entry point of the parser
 ROOT = pp.OneOrMore(heading | paragraph)
@@ -52,7 +52,7 @@ citation.setParseAction(lambda toks: CITATION(" ".join(toks[:])))
 
 #pylint: disable=too-many-branches
 def parseText(text):
-    """ 
+    """
     	Wraps the parser with logic to create the appropriate data structures
     """
     #splits text into paragraphs to parse, which is easier than making the parser
@@ -60,7 +60,7 @@ def parseText(text):
     separated = LINESEP.split(text)
     rootSection = None
     currentSection = None
-    while len(separated) > 0:
+    while bool(separated):
         current = separated.pop(0)
         if current == "":
             continue
@@ -70,10 +70,8 @@ def parseText(text):
             logging.info('Parser Issue with: {}'.format(current))
             raise e
         #parsed a header, create a section
-        if len(results) == 0:
-            #pylint: disable=redefined-variable-type
+        if not bool(results):
             results = "Nothing, just add the paragraph"
-            #pylint: enable=redefined-variable-type
 
         if isinstance(results[0], HEADER) and rootSection is None:
             #a new, root section
@@ -110,4 +108,3 @@ def parseText(text):
 
     return rootSection
 #pylint: enable=too-many-branches
-
