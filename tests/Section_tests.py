@@ -1,8 +1,8 @@
 import unittest
 import logging
 from test_context import doctester as dt
-from doctester.Section import Section
-from doctester.Should import Should
+from doctester.section import Section
+from doctester.should import Should
 
 class Section_Tests(unittest.TestCase):
 
@@ -10,8 +10,8 @@ class Section_Tests(unittest.TestCase):
     def test_initialise(self):
         aSection = Section('aTitle',1)
         self.assertIsInstance(aSection,Section)
-        self.assertEqual(aSection.title,'aTitle')
-        self.assertEqual(aSection.level,1)
+        self.assertEqual(aSection._title,'aTitle')
+        self.assertEqual(aSection._level,1)
         self.assertTrue(aSection.is_section())
         self.assertFalse(aSection.is_document())
 
@@ -44,11 +44,11 @@ class Section_Tests(unittest.TestCase):
 
     def test_paragraphs(self):
         aSection = Section('aTitle',1)
-        self.assertEqual(len(aSection.paragraphs),0)
+        self.assertEqual(len(aSection._paragraphs),0)
         aSection.add_paragraph("this is a test text.")
-        self.assertEqual(len(aSection.paragraphs),1)
+        self.assertEqual(len(aSection._paragraphs),1)
         aSection.add_paragraph("this is another test text.")
-        self.assertEqual(len(aSection.paragraphs),2)
+        self.assertEqual(len(aSection._paragraphs),2)
         paragraphs = aSection.get_paragraphs()
         self.assertEqual(len(paragraphs),2)
         self.assertEqual(paragraphs[0]['text'].text,"this is a test text.")
@@ -57,7 +57,7 @@ class Section_Tests(unittest.TestCase):
     def test_subsection(self):
         aSection = Section('aTitle',1)
         newSection = aSection.add_subsection('other',2)
-        self.assertEqual(len(aSection.ordered_subsections),1)
+        self.assertEqual(len(aSection._ordered_subsections),1)
         retrieved = aSection.section('other')
         self.assertIsNotNone(retrieved)
         self.assertIsInstance(retrieved,Section)
