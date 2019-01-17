@@ -1,8 +1,8 @@
 import unittest
 import logging
 from test_context import doctester as dt
-from doctester.Section import Section
-from doctester.Should import Should
+from doctester.section import Section
+from doctester.should import Should
 
 class Should_Tests(unittest.TestCase):
 
