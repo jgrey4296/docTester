@@ -2,6 +2,7 @@
 	Defines the Document class, top level collection of texts
 """
 #pylint: disable=no-self-use
+import IPython
 import logging as root_logger
 from os.path import join, isdir, splitext
 from os import listdir
