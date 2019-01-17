@@ -1,13 +1,15 @@
 import unittest
 import logging
+import IPython
 from test_context import doctester as dt
-from doctester.Document import Document
-from doctester.Section import Section
-from doctester.Should import Should
+from doctester.document import Document
+from doctester.section import Section
+from doctester.should import Should
+from doctester.doc_exception import DocException
 
 class Document_Tests(unittest.TestCase):
 
-    def setup(self):
+    def setUp(self):
         self.doc = Document('./data')
 
     def test_existence(self):
@@ -16,27 +18,29 @@ class Document_Tests(unittest.TestCase):
         self.assertTrue(self.doc.is_document())
 
     def test_found_files(self):
-        self.assertTrue(True)
+        self.assertEqual(self.doc._directory, './data')
+        self.assertTrue('test.org' in self.doc._files)
+        self.assertTrue('second.org' in self.doc._files)
 
     def test_chapter(self):
-        self.assertTrue(True)
-
-    def test_found_files(self):
-        self.assertTrue(True)
+        self.assertIsNotNone(self.doc.chapter('test'))
+        with self.assertRaises(DocException):
+            self.doc.chapter('blah')
 
     def test_word_count(self):
-        self.assertTrue(True)
+        self.assertGreater(self.doc.get_word_count(), 30)
 
     def test_sentence_count(self):
-        self.assertTrue(True)
+        self.assertGreater(self.doc.get_sentence_count(), 10)
 
     def test_citations(self):
-        self.assertTrue(True)
+        self.assertGreater(len(self.doc.citations()), 0)
 
     def test_mentions(self):
-        self.assertTrue(True)
-
-
+        self.assertTrue(self.doc.mentions('cites'))
+        self.assertTrue(self.doc.mentions('graeber'))
+        self.assertFalse(self.doc.mentions('queen'))
+        self.assertTrue(self.doc.mentions('additional'))
 
 if __name__ == "__main__":
       LOGLEVEL = logging.DEBUG
