@@ -1,3 +1,6 @@
+"""
+A Quick file to check text can be parsed
+"""
 # Setup root_logger:
 import IPython
 import logging as root_logger
