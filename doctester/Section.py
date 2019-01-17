@@ -4,6 +4,7 @@
 #pylint: disable=no-self-use
 import logging as root_logger
 import spacy
+import IPython
 from doctester.doc_exception import DocException
 from doctester.should import Should
 
@@ -74,7 +75,7 @@ class Section:
         """ Assign an object to be the parent of this section """
         if self._parent_section is not None:
             raise Exception('Attempting to redefine parent section')
-        elif ref.is_section() and ref.level >= self._level:
+        elif ref.is_section() and ref._level >= self._level:
             raise Exception('Attempting to set a parent that is of a bad level')
         else:
             self._parent_section = ref
@@ -130,7 +131,10 @@ class Section:
     def get_word_count(self):
         """ Get the total word count of paragraphs + subsections """
         base_count = 0
-        base_count += sum([len(x['text']) for x in self._paragraphs])
+        for paragraph in self._paragraphs:
+            words = [token.text for token in paragraph['text'] \
+                     if token.is_stop != True and token.is_punct != True]
+            base_count += len(words)
         base_count += sum([x.get_word_count() for x in self._ordered_subsections])
         return base_count
 
