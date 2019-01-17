@@ -1,3 +1,6 @@
+"""
+An Example use of the DocTester module
+"""
 from doctester import Document, DocTestRunner, DocException, SizedShould
 
 # Setup root_logger:
@@ -12,14 +15,12 @@ root_logger.getLogger('').addHandler(console)
 logging = root_logger.getLogger(__name__)
 ##############################
 
-
-
 class ExampleTester(DocTestRunner):
 
     def __init__(self):
         super().__init__()
         self.d = Document('./data')
-    
+
     def test_success_(self):
         return True
 
@@ -36,7 +37,7 @@ class ExampleTester(DocTestRunner):
     def test_section(self):
         self.d.chapter('test').should.have.section('introduction')
         self.d.chapter('second').should.have.section('background')
-        
+
     def test_fail_section(self):
         self.d.chapter('test').should.have.section('blahh')
 
@@ -45,10 +46,10 @@ class ExampleTester(DocTestRunner):
 
     def test_fail_mention(self):
         self.d.chapter('test').should.mention('bloo')
-        
+
     def test_citation(self):
         self.d.chapter('test').should.cite('Graeber 99')
-        
+
     def test_fail_mention(self):
         self.d.chapter('test').should.mention('bloo')
 
@@ -64,7 +65,7 @@ class ExampleTester(DocTestRunner):
 
     def test_length_most(self):
         self.d.chapter('test').section('introduction').should.have.length.at.most(4).paragraphs()
-        
+
     def test_fail_length_paragraphs(self):
         self.d.chapter('second').should.have.length.larger.than(15).paragraphs()
 
@@ -91,8 +92,8 @@ class ExampleTester(DocTestRunner):
 
     def test_fail_citation(self):
         self.d.chapter('test').should.cite('McCoy 2003')
-        
-        
+
+
 ##############################
 if __name__ == '__main__':
     runner = ExampleTester()
