@@ -34,7 +34,7 @@ class Document_Tests(unittest.TestCase):
         self.assertGreater(self.doc.get_sentence_count(), 10)
 
     def test_citations(self):
-        self.assertGreater(len(self.doc.citations()), 0)
+        self.assertGreater(len(self.doc.get_citations()), 0)
 
     def test_mentions(self):
         self.assertTrue(self.doc.mentions('cites'))
@@ -44,7 +44,7 @@ class Document_Tests(unittest.TestCase):
 
 if __name__ == "__main__":
       LOGLEVEL = logging.DEBUG
-      logFileName = "doctester_tests.log"
+      logFileName = "log.doctester_tests"
       logging.basicConfig(filename=logFileName, level=LOGLEVEL, filemode='w')
       console = logging.StreamHandler()
       console.setLevel(logging.INFO)

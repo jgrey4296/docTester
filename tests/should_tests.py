@@ -1,51 +1,87 @@
 import unittest
 import logging
 from test_context import doctester as dt
+from doctester.document import Document
 from doctester.section import Section
 from doctester.should import Should
+from doctester.doc_exception import DocException
 
 class Should_Tests(unittest.TestCase):
 
+    def setUp(self):
+        self.doc = Document('./data')
+
+    def tearDown(self):
+        self.doc = None
+
     def test_existence(self):
-        self.assertTrue(True)
+        #Check should class exists,
+        #and exists from appropriate creations
+        self.assertIsNotNone(Should)
+
+    def test_doc_creation(self):
+        shd = self.doc.should
+        self.assertIsNotNone(shd)
+        self.assertIsInstance(shd, Should)
+
+    def test_section_creation(self):
+        sec = self.doc.chapter('test')
+        self.assertIsInstance(sec, Section)
+        self.assertIsInstance(sec.should, Should)
 
     def test_mention(self):
-        self.assertTrue(True)
+        #Check mention call
+        self.assertTrue(self.doc.should.mention('graeber'))
 
     def test_cite(self):
-        self.assertTrue(True)
+        #check cite call
+        self.assertTrue(self.doc.should.cite('Graeber 99'))
 
     def test_precede(self):
-        self.assertTrue(True)
+        #check precede call
+        chap = self.doc.chapter('test')
+        self.assertTrue(chap.section('introduction').should.precede('conclusion'))
 
     def test_section(self):
-        self.assertTrue(True)
+        #check contains section call
+        chap = self.doc.chapter('test')
+        self.assertTrue(chap.should.have.section('introduction'))
 
     def test_subsections(self):
+        #check contains subsections call
         self.assertTrue(True)
 
     def test_chapter(self):
-        self.assertTrue(True)
+        #check contains chapter call
+        self.assertTrue(self.doc.should.have.chapter('test'))
+        with self.assertRaises(DocException):
+            self.doc.should.have.chapter('blah')
 
     def test_sections(self):
-        self.assertTrue(True)
+        #check contains multiple sections call
+        self.assertTrue(self.doc.chapter('test').should.have.sections('introduction','conclusion'))
 
     def test_tag(self):
-        self.assertTrue(True)
+        #Check tag call
+        self.assertTrue(self.doc.chapter('test').should.have.tag('intro'))
 
     def test_regex(self):
-        self.assertTrue(True)
-
-    def test_length(self):
-        self.assertTrue(True)
+        #check regex test call
+        self.assertTrue(self.doc.chapter('test').should.have.regex(r'the'))
 
 class SizedShould_Tests(unittest.TestCase):
 
+    def setUp(self):
+        self.doc = Document('./data')
+
+    def tearDown(self):
+        self.doc = None
+
     def test_larger(self):
-        self.assertTrue(True)
+        self.assertTrue(self.doc.should.have.length.larger.than(10).sentences())
 
     def test_smaller(self):
-        self.assertTrue(True)
+        self.assertTrue(self.doc.should.have.length.smaller.than(50).sentences())
 
     def test_equal(self):
         self.assertTrue(True)
@@ -73,16 +109,6 @@ class SizedShould_Tests(unittest.TestCase):
 
     def test_subsections_len(self):
         self.assertTrue(True)
-
-
-
-
-
-
-
-
-
-
 
 
 
