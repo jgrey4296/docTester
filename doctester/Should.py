@@ -4,6 +4,7 @@
 #pylint: disable=no-self-use
 import IPython
 import logging as root_logger
+import regex
 from doctester.doc_exception import DocException
 logging = root_logger.getLogger(__name__)
 
@@ -91,16 +92,30 @@ class Should:
 
     def sections(self, *args):
         """ Utility to test for multiple sections """
-        raise DocException("Sections not found", missing=args)
+        for x in args:
+            self.section(x)
+        return self
 
     def tag(self, tag):
         """ Test a selected Document/Section/Subsection/Paragraph/Sentence for a tag """
         if not self._ref.has_tag(tag):
             raise DocException("Tag not found", missing=tag)
+        return self
 
     def regex(self, reg):
         """ Test a selected Doc/Sec/SubSec/Para/Sentence for a regex """
-        raise DocException("Regex not found", missing=reg)
+        #apply it to the text
+        found = False
+        if self._ref.is_document():
+            for x in self.ref._chapters.values():
+                found = found or x.regex(reg)
+        #apply it to the subsections
+        if self._ref.is_section():
+            found = found or self._ref.regex(reg)
+
+        if not found:
+            raise DocException('Regex not found')
+        return self
 
     def _length(self):
         # _length instead of length to not interfere with getattr above

@@ -5,6 +5,7 @@
 import logging as root_logger
 import spacy
 import IPython
+import regex
 from doctester.doc_exception import DocException
 from doctester.should import Should
 
@@ -161,4 +162,15 @@ class Section:
             if section.mentions(reference):
                 return True
 
+        return False
+
+    def regex(self, reg):
+        """ Test the text of the section and below for a regex """
+        re = regex.compile(reg)
+        for paragraph in self._paragraphs:
+            if bool(re.search(paragraph['text'].text)):
+                return True
+        for section in self._ordered_subsections:
+            if section.regex(reg):
+                return True
         return False

@@ -23,7 +23,7 @@ class Document:
             raise Exception("Bad Directory Specification: {}".format(directory))
         read_files = listdir(directory)
         org_files = [x for x in read_files if splitext(x)[1] == Document.FILETYPE and x[0] != '#']
-        logging.info('Selected files: {}'.format(org_files))
+        logging.debug('Selected files: {}'.format(org_files))
         self._directory = directory
         self._files = org_files
         self._chapters = {}
