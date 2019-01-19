@@ -83,7 +83,7 @@ class Document:
         """ Get the number of paragraphs in the chapters of the document """
         return sum([x.get_paragraph_count() for x in self._chapters.values()])
 
-    def citations(self):
+    def get_citations(self):
         """ Get the Union of all citation sets of all sub chapters/sections """
         base_set = set()
         citation_sets = [x.get_citations() for x in self._chapters.values()]

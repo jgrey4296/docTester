@@ -132,8 +132,8 @@ class Section:
         """ Get the total word count of paragraphs + subsections """
         base_count = 0
         for paragraph in self._paragraphs:
-            words = [token.text for token in paragraph['text'] \
-                     if token.is_stop != True and token.is_punct != True]
+            words = [token for token in paragraph['text'] \
+                     if token.is_punct is False]
             base_count += len(words)
         base_count += sum([x.get_word_count() for x in self._ordered_subsections])
         return base_count
