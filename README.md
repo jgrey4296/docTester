@@ -1,4 +1,6 @@
-#  Unit Testing of writing
+#  Unit Testing of writing OBSOLETE
+
+Obsolete prototype. Now reimplemented as a spacemacs layer.
 
 I Find Test Driven Development to be a particularly useful way of structuring my code,
 and tracking my progress as I write programs.  
